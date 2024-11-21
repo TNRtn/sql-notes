@@ -1,0 +1,1154 @@
+dows [Version 10.0.22631.4460]   https://chatgpt.com/share/673ebcb9-7a58-8013-97d5-e39d3b334933
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\tallu>mysql
+ERROR 1045 (28000): Access denied for user 'ODBC'@'localhost' (using password: NO)
+
+C:\Users\tallu>mysql -u root -p
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| a5                 |
+| a6                 |
+| ass4               |
+| dbms03             |
+| information_schema |
+| jerry              |
+| languagetrnslation |
+| mysql              |
+| performance_schema |
+| quiz               |
+| srm                |
+| student            |
+| sys                |
+| tnr                |
+| tnr2               |
+| user               |
+| web                |
+| world              |
++--------------------+
+18 rows in set (0.04 sec)
+
+mysql> use jerry;
+Database changed
+mysql> show tables();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '()' at line 1
+mysql> show tables;
++-----------------+
+| Tables_in_jerry |
++-----------------+
+| attendence      |
+| employee        |
+| login           |
+| salary          |
+| student         |
++-----------------+
+5 rows in set (0.02 sec)
+
+mysql> slect * from login
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'slect * from login' at line 1
+mysql> select * from login;
++----------+----------+
+| username | password |
++----------+----------+
+| TNR      | T.N.R.11 |
++----------+----------+
+1 row in set (0.02 sec)
+
+mysql> select login.username;
+ERROR 1109 (42S02): Unknown table 'login' in field list
+mysql> select login.username from login;
++----------+
+| username |
++----------+
+| TNR      |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select t.login from login as t;
+ERROR 1054 (42S22): Unknown column 't.login' in 'field list'
+mysql> select t.username from login as t;
++----------+
+| username |
++----------+
+| TNR      |
++----------+
+1 row in set (0.00 sec)
+
+mysql> slect * from login;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'slect * from login' at line 1
+mysql> select * from login;
++----------+----------+
+| username | password |
++----------+----------+
+| TNR      | T.N.R.11 |
++----------+----------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee;
++------+-------+--------+-----------+--------+--------+----------------------+------------+
+| id   | name  | gender | address   | state  | city   | email                | phone      |
++------+-------+--------+-----------+--------+--------+----------------------+------------+
+| 138  | virat | Male   | delhi     | delhi  | delhi  | viratkohli@gmail.ccm | 8975400123 |
+| 9384 | TNR   | Male   | ......... | ...... | ****** | *******              | *********  |
++------+-------+--------+-----------+--------+--------+----------------------+------------+
+2 rows in set (0.02 sec)
+
+mysql> select t.name,t.gender,n.username from employee as t login as n;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'login as n' at line 1
+mysql> SELECT t.name, t.gender, n.username
+    -> FROM employee AS t
+    -> JOIN login AS n
+    -> ON t.id = n.employee_id;
+ERROR 1054 (42S22): Unknown column 'n.employee_id' in 'on clause'
+mysql> SELECT t.name, t.gender, n.username
+    -> FROM employee AS t
+    -> JOIN login AS n
+    -> ON t.name = n.username;
++------+--------+----------+
+| name | gender | username |
++------+--------+----------+
+| TNR  | Male   | TNR      |
++------+--------+----------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE Departments (
+    ->     DepartmentID INT PRIMARY KEY,
+    ->     DepartmentName VARCHAR(50),
+    ->     Location VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO Departments (DepartmentID, DepartmentName, Location) VALUES
+    -> (101, 'Human Resources', 'New York'),
+    -> (102, 'Finance', 'Chicago'),
+    -> (103, 'IT', 'San Francisco'),
+    -> (104, 'Marketing', 'Los Angeles'),
+    -> (105, 'Operations', 'Seattle'),
+    -> (106, 'Legal', 'Boston'),
+    -> (107, 'Sales', 'Dallas'),
+    -> (108, 'Research', 'Houston'),
+    -> (109, 'Customer Service', 'Miami'),
+    -> (110, 'Admin', 'Denver');
+Query OK, 10 rows affected (0.02 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Employees (
+    ->     EmployeeID INT PRIMARY KEY,
+    ->     EmployeeName VARCHAR(50),
+    ->     DepartmentID INT,
+    ->     Salary DECIMAL(10, 2),
+    ->     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Employees (EmployeeID, EmployeeName, DepartmentID, Salary) VALUES
+    -> (1, 'John Smith', 101, 50000),
+    -> (2, 'Jane Doe', 102, 60000),
+    -> (3, 'Emily Johnson', 101, 55000),
+    -> (4, 'Michael Brown', 103, 70000),
+    -> (5, 'Sarah Davis', 104, 65000),
+    -> (6, 'David Wilson', 105, 48000),
+    -> (7, 'Karen Martinez', 102, 58000),
+    -> (8, 'James Anderson', 103, 72000),
+    -> (9, 'Mary Clark', 104, 67000),
+    -> (10, 'Daniel Garcia', 105, 46000);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select e.EmployeeName,d.DepartmentName from Employee as e join department as d on d.DepartmentID=100+e.EmployeeID;
+ERROR 1146 (42S02): Table 'jerry.department' doesn't exist
+mysql> select e.EmployeeName,d.DepartmentName from Employee as e join Departments as d on d.DepartmentID=100+e.EmployeeID;
+ERROR 1054 (42S22): Unknown column 'e.EmployeeName' in 'field list'
+mysql> SELECT e.EmployeeName, d.DepartmentName
+    -> FROM Employees AS e
+    -> JOIN Departments AS d
+    -> ON d.DepartmentID = 100 + e.EmployeeID;
++----------------+------------------+
+| EmployeeName   | DepartmentName   |
++----------------+------------------+
+| John Smith     | Human Resources  |
+| Jane Doe       | Finance          |
+| Emily Johnson  | IT               |
+| Michael Brown  | Marketing        |
+| Sarah Davis    | Operations       |
+| David Wilson   | Legal            |
+| Karen Martinez | Sales            |
+| James Anderson | Research         |
+| Mary Clark     | Customer Service |
+| Daniel Garcia  | Admin            |
++----------------+------------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from Departments;
++--------------+------------------+---------------+
+| DepartmentID | DepartmentName   | Location      |
++--------------+------------------+---------------+
+|          101 | Human Resources  | New York      |
+|          102 | Finance          | Chicago       |
+|          103 | IT               | San Francisco |
+|          104 | Marketing        | Los Angeles   |
+|          105 | Operations       | Seattle       |
+|          106 | Legal            | Boston        |
+|          107 | Sales            | Dallas        |
+|          108 | Research         | Houston       |
+|          109 | Customer Service | Miami         |
+|          110 | Admin            | Denver        |
++--------------+------------------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from Employees;
++------------+----------------+--------------+----------+
+| EmployeeID | EmployeeName   | DepartmentID | Salary   |
++------------+----------------+--------------+----------+
+|          1 | John Smith     |          101 | 50000.00 |
+|          2 | Jane Doe       |          102 | 60000.00 |
+|          3 | Emily Johnson  |          101 | 55000.00 |
+|          4 | Michael Brown  |          103 | 70000.00 |
+|          5 | Sarah Davis    |          104 | 65000.00 |
+|          6 | David Wilson   |          105 | 48000.00 |
+|          7 | Karen Martinez |          102 | 58000.00 |
+|          8 | James Anderson |          103 | 72000.00 |
+|          9 | Mary Clark     |          104 | 67000.00 |
+|         10 | Daniel Garcia  |          105 | 46000.00 |
++------------+----------------+--------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO Departments (DepartmentID, DepartmentName, Location) VALUES
+    -> (101, 'Human Resources', 'New York'),  -- Duplicate
+    -> (102, 'Finance', 'Chicago'),          -- Duplicate
+    -> (103, 'IT', 'San Francisco');         -- Duplicate
+ERROR 1062 (23000): Duplicate entry '101' for key 'departments.PRIMARY'
+mysql> INSERT INTO Employees (EmployeeID, EmployeeName, DepartmentID, Salary) VALUES
+    -> (1, 'John Smith', 101, 50000),        -- Duplicate
+    -> (2, 'Jane Doe', 102, 60000),          -- Duplicate
+    -> (3, 'Emily Johnson', 101, 55000);     -- Duplicate
+ERROR 1062 (23000): Duplicate entry '1' for key 'employees.PRIMARY'
+mysql> INSERT INTO Departments (DepartmentID, DepartmentName, Location) VALUES
+    -> (106, 'Human Resources', 'Boston'), -- Same DepartmentName, different ID
+    -> (107, 'Finance', 'Houston'),       -- Same DepartmentName, different ID
+    -> (108, 'IT', 'Chicago');            -- Same DepartmentName, different ID
+ERROR 1062 (23000): Duplicate entry '106' for key 'departments.PRIMARY'
+mysql> INSERT INTO Departments (DepartmentID, DepartmentName, Location) VALUES
+    -> (111, 'Human Resources', 'Boston'),
+    -> (112, 'Finance', 'Houston'),
+    -> (113, 'IT', 'Chicago');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Employees (EmployeeID, EmployeeName, DepartmentID, Salary) VALUES
+    -> (11, 'John Smith', 106, 52000),   -- Same name, different DepartmentID
+    -> (12, 'Jane Doe', 107, 61000),     -- Same name, different DepartmentID
+    -> (13, 'Emily Johnson', 108, 57000);-- Same name, different DepartmentID
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Employees (EmployeeID, EmployeeName, DepartmentID, Salary) VALUES
+    -> (11, 'John Smith', 106, 52000),   -- Same name, different DepartmentID...
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select e.EmployeeName,d.DepartmentName from Employees as e join Departments as d on d.DepartmentsId+e.EmployeeID>110;
+ERROR 1054 (42S22): Unknown column 'd.DepartmentsId' in 'on clause'
+mysql> select e.EmployeeName,d.DepartmentName
+    -> from Employees as e join Departments as d
+    -> on d.DepartmentId+e.EmployeeID>100;
++----------------+------------------+
+| EmployeeName   | DepartmentName   |
++----------------+------------------+
+| Emily Johnson  | Human Resources  |
+| Jane Doe       | Human Resources  |
+| John Smith     | Human Resources  |
+| Daniel Garcia  | Human Resources  |
+| Mary Clark     | Human Resources  |
+| James Anderson | Human Resources  |
+| Karen Martinez | Human Resources  |
+| David Wilson   | Human Resources  |
+| Sarah Davis    | Human Resources  |
+| Michael Brown  | Human Resources  |
+| Emily Johnson  | Human Resources  |
+| Jane Doe       | Human Resources  |
+| John Smith     | Human Resources  |
+| Emily Johnson  | Finance          |
+| Jane Doe       | Finance          |
+| John Smith     | Finance          |
+| Daniel Garcia  | Finance          |
+| Mary Clark     | Finance          |
+| James Anderson | Finance          |
+| Karen Martinez | Finance          |
+| David Wilson   | Finance          |
+| Sarah Davis    | Finance          |
+| Michael Brown  | Finance          |
+| Emily Johnson  | Finance          |
+| Jane Doe       | Finance          |
+| John Smith     | Finance          |
+| Emily Johnson  | IT               |
+| Jane Doe       | IT               |
+| John Smith     | IT               |
+| Daniel Garcia  | IT               |
+| Mary Clark     | IT               |
+| James Anderson | IT               |
+| Karen Martinez | IT               |
+| David Wilson   | IT               |
+| Sarah Davis    | IT               |
+| Michael Brown  | IT               |
+| Emily Johnson  | IT               |
+| Jane Doe       | IT               |
+| John Smith     | IT               |
+| Emily Johnson  | Marketing        |
+| Jane Doe       | Marketing        |
+| John Smith     | Marketing        |
+| Daniel Garcia  | Marketing        |
+| Mary Clark     | Marketing        |
+| James Anderson | Marketing        |
+| Karen Martinez | Marketing        |
+| David Wilson   | Marketing        |
+| Sarah Davis    | Marketing        |
+| Michael Brown  | Marketing        |
+| Emily Johnson  | Marketing        |
+| Jane Doe       | Marketing        |
+| John Smith     | Marketing        |
+| Emily Johnson  | Operations       |
+| Jane Doe       | Operations       |
+| John Smith     | Operations       |
+| Daniel Garcia  | Operations       |
+| Mary Clark     | Operations       |
+| James Anderson | Operations       |
+| Karen Martinez | Operations       |
+| David Wilson   | Operations       |
+| Sarah Davis    | Operations       |
+| Michael Brown  | Operations       |
+| Emily Johnson  | Operations       |
+| Jane Doe       | Operations       |
+| John Smith     | Operations       |
+| Emily Johnson  | Legal            |
+| Jane Doe       | Legal            |
+| John Smith     | Legal            |
+| Daniel Garcia  | Legal            |
+| Mary Clark     | Legal            |
+| James Anderson | Legal            |
+| Karen Martinez | Legal            |
+| David Wilson   | Legal            |
+| Sarah Davis    | Legal            |
+| Michael Brown  | Legal            |
+| Emily Johnson  | Legal            |
+| Jane Doe       | Legal            |
+| John Smith     | Legal            |
+| Emily Johnson  | Sales            |
+| Jane Doe       | Sales            |
+| John Smith     | Sales            |
+| Daniel Garcia  | Sales            |
+| Mary Clark     | Sales            |
+| James Anderson | Sales            |
+| Karen Martinez | Sales            |
+| David Wilson   | Sales            |
+| Sarah Davis    | Sales            |
+| Michael Brown  | Sales            |
+| Emily Johnson  | Sales            |
+| Jane Doe       | Sales            |
+| John Smith     | Sales            |
+| Emily Johnson  | Research         |
+| Jane Doe       | Research         |
+| John Smith     | Research         |
+| Daniel Garcia  | Research         |
+| Mary Clark     | Research         |
+| James Anderson | Research         |
+| Karen Martinez | Research         |
+| David Wilson   | Research         |
+| Sarah Davis    | Research         |
+| Michael Brown  | Research         |
+| Emily Johnson  | Research         |
+| Jane Doe       | Research         |
+| John Smith     | Research         |
+| Emily Johnson  | Customer Service |
+| Jane Doe       | Customer Service |
+| John Smith     | Customer Service |
+| Daniel Garcia  | Customer Service |
+| Mary Clark     | Customer Service |
+| James Anderson | Customer Service |
+| Karen Martinez | Customer Service |
+| David Wilson   | Customer Service |
+| Sarah Davis    | Customer Service |
+| Michael Brown  | Customer Service |
+| Emily Johnson  | Customer Service |
+| Jane Doe       | Customer Service |
+| John Smith     | Customer Service |
+| Emily Johnson  | Admin            |
+| Jane Doe       | Admin            |
+| John Smith     | Admin            |
+| Daniel Garcia  | Admin            |
+| Mary Clark     | Admin            |
+| James Anderson | Admin            |
+| Karen Martinez | Admin            |
+| David Wilson   | Admin            |
+| Sarah Davis    | Admin            |
+| Michael Brown  | Admin            |
+| Emily Johnson  | Admin            |
+| Jane Doe       | Admin            |
+| John Smith     | Admin            |
+| Emily Johnson  | Human Resources  |
+| Jane Doe       | Human Resources  |
+| John Smith     | Human Resources  |
+| Daniel Garcia  | Human Resources  |
+| Mary Clark     | Human Resources  |
+| James Anderson | Human Resources  |
+| Karen Martinez | Human Resources  |
+| David Wilson   | Human Resources  |
+| Sarah Davis    | Human Resources  |
+| Michael Brown  | Human Resources  |
+| Emily Johnson  | Human Resources  |
+| Jane Doe       | Human Resources  |
+| John Smith     | Human Resources  |
+| Emily Johnson  | Finance          |
+| Jane Doe       | Finance          |
+| John Smith     | Finance          |
+| Daniel Garcia  | Finance          |
+| Mary Clark     | Finance          |
+| James Anderson | Finance          |
+| Karen Martinez | Finance          |
+| David Wilson   | Finance          |
+| Sarah Davis    | Finance          |
+| Michael Brown  | Finance          |
+| Emily Johnson  | Finance          |
+| Jane Doe       | Finance          |
+| John Smith     | Finance          |
+| Emily Johnson  | IT               |
+| Jane Doe       | IT               |
+| John Smith     | IT               |
+| Daniel Garcia  | IT               |
+| Mary Clark     | IT               |
+| James Anderson | IT               |
+| Karen Martinez | IT               |
+| David Wilson   | IT               |
+| Sarah Davis    | IT               |
+| Michael Brown  | IT               |
+| Emily Johnson  | IT               |
+| Jane Doe       | IT               |
+| John Smith     | IT               |
++----------------+------------------+
+169 rows in set (0.00 sec)
+
+mysql> select e.EmployeeName,d.DepartmentName
+    -> from Employees as e join Departments as d
+    -> on d.DepartmentId+e.EmployeeID>130;
+Empty set (0.00 sec)
+
+mysql> select e.EmployeeName,d.DepartmentName
+    -> from Employees as e join Departments as d
+    -> on d.DepartmentId+e.EmployeeID>125;
++---------------+----------------+
+| EmployeeName  | DepartmentName |
++---------------+----------------+
+| Emily Johnson | IT             |
++---------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> select e.EmployeeName,d.DepartmentName
+    -> from Employees as e join Departments as d
+    -> on d.DepartmentId+e.EmployeeID>120;
++----------------+------------------+
+| EmployeeName   | DepartmentName   |
++----------------+------------------+
+| Emily Johnson  | Research         |
+| Emily Johnson  | Customer Service |
+| Jane Doe       | Customer Service |
+| Emily Johnson  | Admin            |
+| Jane Doe       | Admin            |
+| John Smith     | Admin            |
+| Emily Johnson  | Human Resources  |
+| Jane Doe       | Human Resources  |
+| John Smith     | Human Resources  |
+| Daniel Garcia  | Human Resources  |
+| Emily Johnson  | Finance          |
+| Jane Doe       | Finance          |
+| John Smith     | Finance          |
+| Daniel Garcia  | Finance          |
+| Mary Clark     | Finance          |
+| Emily Johnson  | IT               |
+| Jane Doe       | IT               |
+| John Smith     | IT               |
+| Daniel Garcia  | IT               |
+| Mary Clark     | IT               |
+| James Anderson | IT               |
++----------------+------------------+
+21 rows in set (0.00 sec)
+
+mysql> SELECT e.EmployeeName, e.Salary, d.DepartmentName, d.Location
+    -> FROM Employees e
+    -> LEFT JOIN Departments d
+    -> ON e.DepartmentID = d.DepartmentID;
++----------------+----------+-----------------+---------------+
+| EmployeeName   | Salary   | DepartmentName  | Location      |
++----------------+----------+-----------------+---------------+
+| John Smith     | 50000.00 | Human Resources | New York      |
+| Jane Doe       | 60000.00 | Finance         | Chicago       |
+| Emily Johnson  | 55000.00 | Human Resources | New York      |
+| Michael Brown  | 70000.00 | IT              | San Francisco |
+| Sarah Davis    | 65000.00 | Marketing       | Los Angeles   |
+| David Wilson   | 48000.00 | Operations      | Seattle       |
+| Karen Martinez | 58000.00 | Finance         | Chicago       |
+| James Anderson | 72000.00 | IT              | San Francisco |
+| Mary Clark     | 67000.00 | Marketing       | Los Angeles   |
+| Daniel Garcia  | 46000.00 | Operations      | Seattle       |
+| John Smith     | 52000.00 | Legal           | Boston        |
+| Jane Doe       | 61000.00 | Sales           | Dallas        |
+| Emily Johnson  | 57000.00 | Research        | Houston       |
++----------------+----------+-----------------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> SELECT e.EmployeeName, e.Salary, d.DepartmentName, d.Location
+    -> JOIN Departments d
+    -> on d.DepartmentId+e.EmployeeID>100;...
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'JOIN Departments d
+on d.DepartmentId+e.EmployeeID>100' at line 2
+    -> JOIN Departments d;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '...
+JOIN Departments d' at line 1
+mysql> SELECT e.EmployeeName, e.Salary, d.DepartmentName, d.Location
+    -> FROM Employees e
+    -> JOIN Departments d
+    -> on d.DepartmentId+e.EmployeeID>100;
++----------------+----------+------------------+---------------+
+| EmployeeName   | Salary   | DepartmentName   | Location      |
++----------------+----------+------------------+---------------+
+| Emily Johnson  | 57000.00 | Human Resources  | New York      |
+| Jane Doe       | 61000.00 | Human Resources  | New York      |
+| John Smith     | 52000.00 | Human Resources  | New York      |
+| Daniel Garcia  | 46000.00 | Human Resources  | New York      |
+| Mary Clark     | 67000.00 | Human Resources  | New York      |
+| James Anderson | 72000.00 | Human Resources  | New York      |
+| Karen Martinez | 58000.00 | Human Resources  | New York      |
+| David Wilson   | 48000.00 | Human Resources  | New York      |
+| Sarah Davis    | 65000.00 | Human Resources  | New York      |
+| Michael Brown  | 70000.00 | Human Resources  | New York      |
+| Emily Johnson  | 55000.00 | Human Resources  | New York      |
+| Jane Doe       | 60000.00 | Human Resources  | New York      |
+| John Smith     | 50000.00 | Human Resources  | New York      |
+| Emily Johnson  | 57000.00 | Finance          | Chicago       |
+| Jane Doe       | 61000.00 | Finance          | Chicago       |
+| John Smith     | 52000.00 | Finance          | Chicago       |
+| Daniel Garcia  | 46000.00 | Finance          | Chicago       |
+| Mary Clark     | 67000.00 | Finance          | Chicago       |
+| James Anderson | 72000.00 | Finance          | Chicago       |
+| Karen Martinez | 58000.00 | Finance          | Chicago       |
+| David Wilson   | 48000.00 | Finance          | Chicago       |
+| Sarah Davis    | 65000.00 | Finance          | Chicago       |
+| Michael Brown  | 70000.00 | Finance          | Chicago       |
+| Emily Johnson  | 55000.00 | Finance          | Chicago       |
+| Jane Doe       | 60000.00 | Finance          | Chicago       |
+| John Smith     | 50000.00 | Finance          | Chicago       |
+| Emily Johnson  | 57000.00 | IT               | San Francisco |
+| Jane Doe       | 61000.00 | IT               | San Francisco |
+| John Smith     | 52000.00 | IT               | San Francisco |
+| Daniel Garcia  | 46000.00 | IT               | San Francisco |
+| Mary Clark     | 67000.00 | IT               | San Francisco |
+| James Anderson | 72000.00 | IT               | San Francisco |
+| Karen Martinez | 58000.00 | IT               | San Francisco |
+| David Wilson   | 48000.00 | IT               | San Francisco |
+| Sarah Davis    | 65000.00 | IT               | San Francisco |
+| Michael Brown  | 70000.00 | IT               | San Francisco |
+| Emily Johnson  | 55000.00 | IT               | San Francisco |
+| Jane Doe       | 60000.00 | IT               | San Francisco |
+| John Smith     | 50000.00 | IT               | San Francisco |
+| Emily Johnson  | 57000.00 | Marketing        | Los Angeles   |
+| Jane Doe       | 61000.00 | Marketing        | Los Angeles   |
+| John Smith     | 52000.00 | Marketing        | Los Angeles   |
+| Daniel Garcia  | 46000.00 | Marketing        | Los Angeles   |
+| Mary Clark     | 67000.00 | Marketing        | Los Angeles   |
+| James Anderson | 72000.00 | Marketing        | Los Angeles   |
+| Karen Martinez | 58000.00 | Marketing        | Los Angeles   |
+| David Wilson   | 48000.00 | Marketing        | Los Angeles   |
+| Sarah Davis    | 65000.00 | Marketing        | Los Angeles   |
+| Michael Brown  | 70000.00 | Marketing        | Los Angeles   |
+| Emily Johnson  | 55000.00 | Marketing        | Los Angeles   |
+| Jane Doe       | 60000.00 | Marketing        | Los Angeles   |
+| John Smith     | 50000.00 | Marketing        | Los Angeles   |
+| Emily Johnson  | 57000.00 | Operations       | Seattle       |
+| Jane Doe       | 61000.00 | Operations       | Seattle       |
+| John Smith     | 52000.00 | Operations       | Seattle       |
+| Daniel Garcia  | 46000.00 | Operations       | Seattle       |
+| Mary Clark     | 67000.00 | Operations       | Seattle       |
+| James Anderson | 72000.00 | Operations       | Seattle       |
+| Karen Martinez | 58000.00 | Operations       | Seattle       |
+| David Wilson   | 48000.00 | Operations       | Seattle       |
+| Sarah Davis    | 65000.00 | Operations       | Seattle       |
+| Michael Brown  | 70000.00 | Operations       | Seattle       |
+| Emily Johnson  | 55000.00 | Operations       | Seattle       |
+| Jane Doe       | 60000.00 | Operations       | Seattle       |
+| John Smith     | 50000.00 | Operations       | Seattle       |
+| Emily Johnson  | 57000.00 | Legal            | Boston        |
+| Jane Doe       | 61000.00 | Legal            | Boston        |
+| John Smith     | 52000.00 | Legal            | Boston        |
+| Daniel Garcia  | 46000.00 | Legal            | Boston        |
+| Mary Clark     | 67000.00 | Legal            | Boston        |
+| James Anderson | 72000.00 | Legal            | Boston        |
+| Karen Martinez | 58000.00 | Legal            | Boston        |
+| David Wilson   | 48000.00 | Legal            | Boston        |
+| Sarah Davis    | 65000.00 | Legal            | Boston        |
+| Michael Brown  | 70000.00 | Legal            | Boston        |
+| Emily Johnson  | 55000.00 | Legal            | Boston        |
+| Jane Doe       | 60000.00 | Legal            | Boston        |
+| John Smith     | 50000.00 | Legal            | Boston        |
+| Emily Johnson  | 57000.00 | Sales            | Dallas        |
+| Jane Doe       | 61000.00 | Sales            | Dallas        |
+| John Smith     | 52000.00 | Sales            | Dallas        |
+| Daniel Garcia  | 46000.00 | Sales            | Dallas        |
+| Mary Clark     | 67000.00 | Sales            | Dallas        |
+| James Anderson | 72000.00 | Sales            | Dallas        |
+| Karen Martinez | 58000.00 | Sales            | Dallas        |
+| David Wilson   | 48000.00 | Sales            | Dallas        |
+| Sarah Davis    | 65000.00 | Sales            | Dallas        |
+| Michael Brown  | 70000.00 | Sales            | Dallas        |
+| Emily Johnson  | 55000.00 | Sales            | Dallas        |
+| Jane Doe       | 60000.00 | Sales            | Dallas        |
+| John Smith     | 50000.00 | Sales            | Dallas        |
+| Emily Johnson  | 57000.00 | Research         | Houston       |
+| Jane Doe       | 61000.00 | Research         | Houston       |
+| John Smith     | 52000.00 | Research         | Houston       |
+| Daniel Garcia  | 46000.00 | Research         | Houston       |
+| Mary Clark     | 67000.00 | Research         | Houston       |
+| James Anderson | 72000.00 | Research         | Houston       |
+| Karen Martinez | 58000.00 | Research         | Houston       |
+| David Wilson   | 48000.00 | Research         | Houston       |
+| Sarah Davis    | 65000.00 | Research         | Houston       |
+| Michael Brown  | 70000.00 | Research         | Houston       |
+| Emily Johnson  | 55000.00 | Research         | Houston       |
+| Jane Doe       | 60000.00 | Research         | Houston       |
+| John Smith     | 50000.00 | Research         | Houston       |
+| Emily Johnson  | 57000.00 | Customer Service | Miami         |
+| Jane Doe       | 61000.00 | Customer Service | Miami         |
+| John Smith     | 52000.00 | Customer Service | Miami         |
+| Daniel Garcia  | 46000.00 | Customer Service | Miami         |
+| Mary Clark     | 67000.00 | Customer Service | Miami         |
+| James Anderson | 72000.00 | Customer Service | Miami         |
+| Karen Martinez | 58000.00 | Customer Service | Miami         |
+| David Wilson   | 48000.00 | Customer Service | Miami         |
+| Sarah Davis    | 65000.00 | Customer Service | Miami         |
+| Michael Brown  | 70000.00 | Customer Service | Miami         |
+| Emily Johnson  | 55000.00 | Customer Service | Miami         |
+| Jane Doe       | 60000.00 | Customer Service | Miami         |
+| John Smith     | 50000.00 | Customer Service | Miami         |
+| Emily Johnson  | 57000.00 | Admin            | Denver        |
+| Jane Doe       | 61000.00 | Admin            | Denver        |
+| John Smith     | 52000.00 | Admin            | Denver        |
+| Daniel Garcia  | 46000.00 | Admin            | Denver        |
+| Mary Clark     | 67000.00 | Admin            | Denver        |
+| James Anderson | 72000.00 | Admin            | Denver        |
+| Karen Martinez | 58000.00 | Admin            | Denver        |
+| David Wilson   | 48000.00 | Admin            | Denver        |
+| Sarah Davis    | 65000.00 | Admin            | Denver        |
+| Michael Brown  | 70000.00 | Admin            | Denver        |
+| Emily Johnson  | 55000.00 | Admin            | Denver        |
+| Jane Doe       | 60000.00 | Admin            | Denver        |
+| John Smith     | 50000.00 | Admin            | Denver        |
+| Emily Johnson  | 57000.00 | Human Resources  | Boston        |
+| Jane Doe       | 61000.00 | Human Resources  | Boston        |
+| John Smith     | 52000.00 | Human Resources  | Boston        |
+| Daniel Garcia  | 46000.00 | Human Resources  | Boston        |
+| Mary Clark     | 67000.00 | Human Resources  | Boston        |
+| James Anderson | 72000.00 | Human Resources  | Boston        |
+| Karen Martinez | 58000.00 | Human Resources  | Boston        |
+| David Wilson   | 48000.00 | Human Resources  | Boston        |
+| Sarah Davis    | 65000.00 | Human Resources  | Boston        |
+| Michael Brown  | 70000.00 | Human Resources  | Boston        |
+| Emily Johnson  | 55000.00 | Human Resources  | Boston        |
+| Jane Doe       | 60000.00 | Human Resources  | Boston        |
+| John Smith     | 50000.00 | Human Resources  | Boston        |
+| Emily Johnson  | 57000.00 | Finance          | Houston       |
+| Jane Doe       | 61000.00 | Finance          | Houston       |
+| John Smith     | 52000.00 | Finance          | Houston       |
+| Daniel Garcia  | 46000.00 | Finance          | Houston       |
+| Mary Clark     | 67000.00 | Finance          | Houston       |
+| James Anderson | 72000.00 | Finance          | Houston       |
+| Karen Martinez | 58000.00 | Finance          | Houston       |
+| David Wilson   | 48000.00 | Finance          | Houston       |
+| Sarah Davis    | 65000.00 | Finance          | Houston       |
+| Michael Brown  | 70000.00 | Finance          | Houston       |
+| Emily Johnson  | 55000.00 | Finance          | Houston       |
+| Jane Doe       | 60000.00 | Finance          | Houston       |
+| John Smith     | 50000.00 | Finance          | Houston       |
+| Emily Johnson  | 57000.00 | IT               | Chicago       |
+| Jane Doe       | 61000.00 | IT               | Chicago       |
+| John Smith     | 52000.00 | IT               | Chicago       |
+| Daniel Garcia  | 46000.00 | IT               | Chicago       |
+| Mary Clark     | 67000.00 | IT               | Chicago       |
+| James Anderson | 72000.00 | IT               | Chicago       |
+| Karen Martinez | 58000.00 | IT               | Chicago       |
+| David Wilson   | 48000.00 | IT               | Chicago       |
+| Sarah Davis    | 65000.00 | IT               | Chicago       |
+| Michael Brown  | 70000.00 | IT               | Chicago       |
+| Emily Johnson  | 55000.00 | IT               | Chicago       |
+| Jane Doe       | 60000.00 | IT               | Chicago       |
+| John Smith     | 50000.00 | IT               | Chicago       |
++----------------+----------+------------------+---------------+
+169 rows in set (0.00 sec)
+
+mysql> SELECT e.EmployeeName, e.Salary, d.DepartmentName, d.Location
+    -> FROM Employees e
+    -> JOIN Departments d
+    -> ON e.DepartmentID = d.DepartmentID;
++----------------+----------+-----------------+---------------+
+| EmployeeName   | Salary   | DepartmentName  | Location      |
++----------------+----------+-----------------+---------------+
+| John Smith     | 50000.00 | Human Resources | New York      |
+| Jane Doe       | 60000.00 | Finance         | Chicago       |
+| Emily Johnson  | 55000.00 | Human Resources | New York      |
+| Michael Brown  | 70000.00 | IT              | San Francisco |
+| Sarah Davis    | 65000.00 | Marketing       | Los Angeles   |
+| David Wilson   | 48000.00 | Operations      | Seattle       |
+| Karen Martinez | 58000.00 | Finance         | Chicago       |
+| James Anderson | 72000.00 | IT              | San Francisco |
+| Mary Clark     | 67000.00 | Marketing       | Los Angeles   |
+| Daniel Garcia  | 46000.00 | Operations      | Seattle       |
+| John Smith     | 52000.00 | Legal           | Boston        |
+| Jane Doe       | 61000.00 | Sales           | Dallas        |
+| Emily Johnson  | 57000.00 | Research        | Houston       |
++----------------+----------+-----------------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> INSERT INTO Departments (DepartmentID, DepartmentName, Location) VALUES
+    -> (0,"TNRd","TNRd");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT e.EmployeeName, e.Salary, d.DepartmentName, d.Location
+    -> FROM Employees e
+    -> JOIN Departments d
+    -> ON e.DepartmentID = d.DepartmentID;
++----------------+----------+-----------------+---------------+
+| EmployeeName   | Salary   | DepartmentName  | Location      |
++----------------+----------+-----------------+---------------+
+| John Smith     | 50000.00 | Human Resources | New York      |
+| Jane Doe       | 60000.00 | Finance         | Chicago       |
+| Emily Johnson  | 55000.00 | Human Resources | New York      |
+| Michael Brown  | 70000.00 | IT              | San Francisco |
+| Sarah Davis    | 65000.00 | Marketing       | Los Angeles   |
+| David Wilson   | 48000.00 | Operations      | Seattle       |
+| Karen Martinez | 58000.00 | Finance         | Chicago       |
+| James Anderson | 72000.00 | IT              | San Francisco |
+| Mary Clark     | 67000.00 | Marketing       | Los Angeles   |
+| Daniel Garcia  | 46000.00 | Operations      | Seattle       |
+| John Smith     | 52000.00 | Legal           | Boston        |
+| Jane Doe       | 61000.00 | Sales           | Dallas        |
+| Emily Johnson  | 57000.00 | Research        | Houston       |
++----------------+----------+-----------------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> SELECT e.EmployeeName, e.Salary, d.DepartmentName, d.Location
+    -> FROM Employees e
+    -> LEFT JOIN Departments d
+    -> ON e.DepartmentID = d.DepartmentID;
++----------------+----------+-----------------+---------------+
+| EmployeeName   | Salary   | DepartmentName  | Location      |
++----------------+----------+-----------------+---------------+
+| John Smith     | 50000.00 | Human Resources | New York      |
+| Jane Doe       | 60000.00 | Finance         | Chicago       |
+| Emily Johnson  | 55000.00 | Human Resources | New York      |
+| Michael Brown  | 70000.00 | IT              | San Francisco |
+| Sarah Davis    | 65000.00 | Marketing       | Los Angeles   |
+| David Wilson   | 48000.00 | Operations      | Seattle       |
+| Karen Martinez | 58000.00 | Finance         | Chicago       |
+| James Anderson | 72000.00 | IT              | San Francisco |
+| Mary Clark     | 67000.00 | Marketing       | Los Angeles   |
+| Daniel Garcia  | 46000.00 | Operations      | Seattle       |
+| John Smith     | 52000.00 | Legal           | Boston        |
+| Jane Doe       | 61000.00 | Sales           | Dallas        |
+| Emily Johnson  | 57000.00 | Research        | Houston       |
++----------------+----------+-----------------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> SELECT e.EmployeeName, e.Salary, d.DepartmentName, d.Location
+    -> FROM Employees e
+    -> RIGHT JOIN Departments d
+    -> ON e.DepartmentID = d.DepartmentID;
++----------------+----------+------------------+---------------+
+| EmployeeName   | Salary   | DepartmentName   | Location      |
++----------------+----------+------------------+---------------+
+| NULL           |     NULL | TNRd             | TNRd          |
+| John Smith     | 50000.00 | Human Resources  | New York      |
+| Emily Johnson  | 55000.00 | Human Resources  | New York      |
+| Jane Doe       | 60000.00 | Finance          | Chicago       |
+| Karen Martinez | 58000.00 | Finance          | Chicago       |
+| Michael Brown  | 70000.00 | IT               | San Francisco |
+| James Anderson | 72000.00 | IT               | San Francisco |
+| Sarah Davis    | 65000.00 | Marketing        | Los Angeles   |
+| Mary Clark     | 67000.00 | Marketing        | Los Angeles   |
+| David Wilson   | 48000.00 | Operations       | Seattle       |
+| Daniel Garcia  | 46000.00 | Operations       | Seattle       |
+| John Smith     | 52000.00 | Legal            | Boston        |
+| Jane Doe       | 61000.00 | Sales            | Dallas        |
+| Emily Johnson  | 57000.00 | Research         | Houston       |
+| NULL           |     NULL | Customer Service | Miami         |
+| NULL           |     NULL | Admin            | Denver        |
+| NULL           |     NULL | Human Resources  | Boston        |
+| NULL           |     NULL | Finance          | Houston       |
+| NULL           |     NULL | IT               | Chicago       |
++----------------+----------+------------------+---------------+
+19 rows in set (0.00 sec)
+
+mysql> select avg(Salary) from Employees;
++--------------+
+| avg(Salary)  |
++--------------+
+| 58538.461538 |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> select * from Employees where avg(Salary)>Salary;
+ERROR 1111 (HY000): Invalid use of group function
+mysql> select * from Employees where (select avg(Salary))>Salary;
+Empty set (0.01 sec)
+
+mysql> select * from Employees where (select avg(Salary) from Employee)>Salary;
+Empty set (0.00 sec)
+
+mysql> select * from Employees where (select avg(Salary) from Employee)<Salary;
+Empty set (0.00 sec)
+
+mysql> select * from Employees;
++------------+----------------+--------------+----------+
+| EmployeeID | EmployeeName   | DepartmentID | Salary   |
++------------+----------------+--------------+----------+
+|          1 | John Smith     |          101 | 50000.00 |
+|          2 | Jane Doe       |          102 | 60000.00 |
+|          3 | Emily Johnson  |          101 | 55000.00 |
+|          4 | Michael Brown  |          103 | 70000.00 |
+|          5 | Sarah Davis    |          104 | 65000.00 |
+|          6 | David Wilson   |          105 | 48000.00 |
+|          7 | Karen Martinez |          102 | 58000.00 |
+|          8 | James Anderson |          103 | 72000.00 |
+|          9 | Mary Clark     |          104 | 67000.00 |
+|         10 | Daniel Garcia  |          105 | 46000.00 |
+|         11 | John Smith     |          106 | 52000.00 |
+|         12 | Jane Doe       |          107 | 61000.00 |
+|         13 | Emily Johnson  |          108 | 57000.00 |
++------------+----------------+--------------+----------+
+13 rows in set (0.00 sec)
+
+mysql> select avg(Salary) from Employees;
++--------------+
+| avg(Salary)  |
++--------------+
+| 58538.461538 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select * from Employee where Salary> 58538.461538;
+ERROR 1054 (42S22): Unknown column 'Salary' in 'where clause'
+mysql> select * from Employees where Salary> 58538.461538;
++------------+----------------+--------------+----------+
+| EmployeeID | EmployeeName   | DepartmentID | Salary   |
++------------+----------------+--------------+----------+
+|          2 | Jane Doe       |          102 | 60000.00 |
+|          4 | Michael Brown  |          103 | 70000.00 |
+|          5 | Sarah Davis    |          104 | 65000.00 |
+|          8 | James Anderson |          103 | 72000.00 |
+|          9 | Mary Clark     |          104 | 67000.00 |
+|         12 | Jane Doe       |          107 | 61000.00 |
++------------+----------------+--------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from Employees where Salary> (select avg(Salary) from Employees);
++------------+----------------+--------------+----------+
+| EmployeeID | EmployeeName   | DepartmentID | Salary   |
++------------+----------------+--------------+----------+
+|          2 | Jane Doe       |          102 | 60000.00 |
+|          4 | Michael Brown  |          103 | 70000.00 |
+|          5 | Sarah Davis    |          104 | 65000.00 |
+|          8 | James Anderson |          103 | 72000.00 |
+|          9 | Mary Clark     |          104 | 67000.00 |
+|         12 | Jane Doe       |          107 | 61000.00 |
++------------+----------------+--------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> --scalara sub query
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--scalara sub query' at line 1
+mysql> select avg(Salary) from Departments group by(Salary);
+ERROR 1054 (42S22): Unknown column 'Salary' in 'field list'
+mysql> select avg(Salary) from Employees group by(Salary);
++--------------+
+| avg(Salary)  |
++--------------+
+| 50000.000000 |
+| 60000.000000 |
+| 55000.000000 |
+| 70000.000000 |
+| 65000.000000 |
+| 48000.000000 |
+| 58000.000000 |
+| 72000.000000 |
+| 67000.000000 |
+| 46000.000000 |
+| 52000.000000 |
+| 61000.000000 |
+| 57000.000000 |
++--------------+
+13 rows in set (0.01 sec)
+
+mysql> ALTER TABLE Departments
+    -> ADD Salary DECIMAL(10, 2); -- Adjust the data type based on your needs
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> Update Departments d
+    -> set(Salary select Salary from Employees as e where e.EmployeeId+100=d.DepartmentId);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(Salary select Salary from Employees as e where e.EmployeeId+100=d.DepartmentId)' at line 2
+mysql> Update Departments d
+    -> set Salary=(select Salary from Employees as e where e.EmployeeId+100=d.DepartmentId);
+Query OK, 13 rows affected (0.01 sec)
+Rows matched: 14  Changed: 13  Warnings: 0
+
+mysql> select * from Departments;
++--------------+------------------+---------------+----------+
+| DepartmentID | DepartmentName   | Location      | Salary   |
++--------------+------------------+---------------+----------+
+|            0 | TNRd             | TNRd          |     NULL |
+|          101 | Human Resources  | New York      | 50000.00 |
+|          102 | Finance          | Chicago       | 60000.00 |
+|          103 | IT               | San Francisco | 55000.00 |
+|          104 | Marketing        | Los Angeles   | 70000.00 |
+|          105 | Operations       | Seattle       | 65000.00 |
+|          106 | Legal            | Boston        | 48000.00 |
+|          107 | Sales            | Dallas        | 58000.00 |
+|          108 | Research         | Houston       | 72000.00 |
+|          109 | Customer Service | Miami         | 67000.00 |
+|          110 | Admin            | Denver        | 46000.00 |
+|          111 | Human Resources  | Boston        | 52000.00 |
+|          112 | Finance          | Houston       | 61000.00 |
+|          113 | IT               | Chicago       | 57000.00 |
++--------------+------------------+---------------+----------+
+14 rows in set (0.00 sec)
+
+mysql> select avg(Salary) from Departments group by(DepartmentName);
++--------------+
+| avg(Salary)  |
++--------------+
+|         NULL |
+| 51000.000000 |
+| 60500.000000 |
+| 56000.000000 |
+| 70000.000000 |
+| 65000.000000 |
+| 48000.000000 |
+| 58000.000000 |
+| 72000.000000 |
+| 67000.000000 |
+| 46000.000000 |
++--------------+
+11 rows in set (0.00 sec)
+
+mysql> select * from Employees as e where Salary>(select avg(Salary) from Departments group by(DepartmentName));
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select * from Departments as d where Salary>(Select Avg(Saalry) from Departments e where e.DepartmentName=d.DepartmentName);
+ERROR 1054 (42S22): Unknown column 'Saalry' in 'field list'
+mysql> select * from Departments as d where Salary>(Select Avg(Salary) from Departments e where e.DepartmentName=d.DepartmentName);
++--------------+-----------------+----------+----------+
+| DepartmentID | DepartmentName  | Location | Salary   |
++--------------+-----------------+----------+----------+
+|          111 | Human Resources | Boston   | 52000.00 |
+|          112 | Finance         | Houston  | 61000.00 |
+|          113 | IT              | Chicago  | 57000.00 |
++--------------+-----------------+----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> Select avg(salary) from Departments e where e.DepartmentName=Departments.DepartmentName;
+ERROR 1054 (42S22): Unknown column 'Departments.DepartmentName' in 'where clause'
+mysql> select * from Departments;
++--------------+------------------+---------------+----------+
+| DepartmentID | DepartmentName   | Location      | Salary   |
++--------------+------------------+---------------+----------+
+|            0 | TNRd             | TNRd          |     NULL |
+|          101 | Human Resources  | New York      | 50000.00 |
+|          102 | Finance          | Chicago       | 60000.00 |
+|          103 | IT               | San Francisco | 55000.00 |
+|          104 | Marketing        | Los Angeles   | 70000.00 |
+|          105 | Operations       | Seattle       | 65000.00 |
+|          106 | Legal            | Boston        | 48000.00 |
+|          107 | Sales            | Dallas        | 58000.00 |
+|          108 | Research         | Houston       | 72000.00 |
+|          109 | Customer Service | Miami         | 67000.00 |
+|          110 | Admin            | Denver        | 46000.00 |
+|          111 | Human Resources  | Boston        | 52000.00 |
+|          112 | Finance          | Houston       | 61000.00 |
+|          113 | IT               | Chicago       | 57000.00 |
++--------------+------------------+---------------+----------+
+14 rows in set (0.00 sec)
+
+mysql> select Salary,Rank() over(order by Salary desc) from Departments order by Salary Desc;
++----------+-----------------------------------+
+| Salary   | Rank() over(order by Salary desc) |
++----------+-----------------------------------+
+| 72000.00 |                                 1 |
+| 70000.00 |                                 2 |
+| 67000.00 |                                 3 |
+| 65000.00 |                                 4 |
+| 61000.00 |                                 5 |
+| 60000.00 |                                 6 |
+| 58000.00 |                                 7 |
+| 57000.00 |                                 8 |
+| 55000.00 |                                 9 |
+| 52000.00 |                                10 |
+| 50000.00 |                                11 |
+| 48000.00 |                                12 |
+| 46000.00 |                                13 |
+|     NULL |                                14 |
++----------+-----------------------------------+
+14 rows in set (0.01 sec)
+
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (1, 'Alice', 500, 'North');
+ERROR 1146 (42S02): Table 'jerry.sales' doesn't exist
+mysql>
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (2, 'Bob', 700, 'North');
+ERROR 1146 (42S02): Table 'jerry.sales' doesn't exist
+mysql>
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (3, 'Charlie', 600, 'South');
+ERROR 1146 (42S02): Table 'jerry.sales' doesn't exist
+mysql>
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (4, 'Diana', 800, 'South');
+ERROR 1146 (42S02): Table 'jerry.sales' doesn't exist
+mysql>
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (5, 'Edward', 550, 'West');
+ERROR 1146 (42S02): Table 'jerry.sales' doesn't exist
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)^Z
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> CREATE TABLE Sales (
+    ->     ID INT PRIMARY KEY,
+    ->     Salesperson VARCHAR(100),
+    ->     SalesAmount INT,
+    ->     Region VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (1, 'Alice', 500, 'North');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (2, 'Bob', 700, 'North');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (3, 'Charlie', 600, 'South');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (4, 'Diana', 800, 'South');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> INSERT INTO Sales (ID, Salesperson, SalesAmount, Region)
+    -> VALUES (5, 'Edward', 550, 'West');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from sales;
++----+-------------+-------------+--------+
+| ID | Salesperson | SalesAmount | Region |
++----+-------------+-------------+--------+
+|  1 | Alice       |         500 | North  |
+|  2 | Bob         |         700 | North  |
+|  3 | Charlie     |         600 | South  |
+|  4 | Diana       |         800 | South  |
+|  5 | Edward      |         550 | West   |
++----+-------------+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select *,LEAD() over(order by SalesAmout desc) from sales;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') over(order by SalesAmout desc) from sales' at line 1
+mysql> select ID,Salesperson,SalesAmout,LEAD() over(order by SalesAmout desc) from sales;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') over(order by SalesAmout desc) from sales' at line 1
+mysql> select ID,Salesperson,SalesAmout,LEAD(SalesAmout) over(order by SalesAmout desc) from sales;
+ERROR 1054 (42S22): Unknown column 'SalesAmout' in 'field list'
+mysql> select ID,Salesperson,SalesAmount,LEAD(SalesAmount) over(order by SalesAmount desc) from sales;
++----+-------------+-------------+---------------------------------------------------+
+| ID | Salesperson | SalesAmount | LEAD(SalesAmount) over(order by SalesAmount desc) |
++----+-------------+-------------+---------------------------------------------------+
+|  4 | Diana       |         800 |                                               700 |
+|  2 | Bob         |         700 |                                               600 |
+|  3 | Charlie     |         600 |                                               550 |
+|  5 | Edward      |         550 |                                               500 |
+|  1 | Alice       |         500 |                                              NULL |
++----+-------------+-------------+---------------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select ID,Salesperson,SalesAmount,LEAD(SalesAmount,2) over(order by SalesAmount desc) from sales;
++----+-------------+-------------+-----------------------------------------------------+
+| ID | Salesperson | SalesAmount | LEAD(SalesAmount,2) over(order by SalesAmount desc) |
++----+-------------+-------------+-----------------------------------------------------+
+|  4 | Diana       |         800 |                                                 600 |
+|  2 | Bob         |         700 |                                                 550 |
+|  3 | Charlie     |         600 |                                                 500 |
+|  5 | Edward      |         550 |                                                NULL |
+|  1 | Alice       |         500 |                                                NULL |
++----+-------------+-------------+-----------------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select ID,Salesperson,SalesAmount,LEAD(SalesAmount,2) from sales;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from sales' at line 1
+mysql> select ID,Salesperson,SalesAmount,LEAD(SalesAmount,2) over(order by SalesAmount desc) from sales;
++----+-------------+-------------+-----------------------------------------------------+
+| ID | Salesperson | SalesAmount | LEAD(SalesAmount,2) over(order by SalesAmount desc) |
++----+-------------+-------------+-----------------------------------------------------+
+|  4 | Diana       |         800 |                                                 600 |
+|  2 | Bob         |         700 |                                                 550 |
+|  3 | Charlie     |         600 |                                                 500 |
+|  5 | Edward      |         550 |                                                NULL |
+|  1 | Alice       |         500 |                                                NULL |
++----+-------------+-------------+-----------------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select ID,Salesperson,SalesAmout,LEAD(SalesAmout) over(partition by Region order by SalesAmout desc) from sales;
+ERROR 1054 (42S22): Unknown column 'SalesAmout' in 'field list'
+mysql> select ID,Salesperson,SalesAmount,LEAD(SalesAmount) over(partition by Region order by SalesAmount desc) from sales;
++----+-------------+-------------+-----------------------------------------------------------------------+
+| ID | Salesperson | SalesAmount | LEAD(SalesAmount) over(partition by Region order by SalesAmount desc) |
++----+-------------+-------------+-----------------------------------------------------------------------+
+|  2 | Bob         |         700 |                                                                   500 |
+|  1 | Alice       |         500 |                                                                  NULL |
+|  4 | Diana       |         800 |                                                                   600 |
+|  3 | Charlie     |         600 |                                                                  NULL |
+|  5 | Edward      |         550 |                                                                  NULL |
++----+-------------+-------------+-----------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     ID,
+    ->     Salesperson,
+    ->     SalesAmount,
+    ->     LEAD(SalesAmount) OVER (ORDER BY ID) AS NextSales,
+    ->     LEAD(SalesAmount) OVER (ORDER BY ID) - SalesAmount AS SalesDifference
+    -> FROM Sales;
++----+-------------+-------------+-----------+-----------------+
+| ID | Salesperson | SalesAmount | NextSales | SalesDifference |
++----+-------------+-------------+-----------+-----------------+
+|  1 | Alice       |         500 |       700 |             200 |
+|  2 | Bob         |         700 |       600 |            -100 |
+|  3 | Charlie     |         600 |       800 |             200 |
+|  4 | Diana       |         800 |       550 |            -250 |
+|  5 | Edward      |         550 |      NULL |            NULL |
++----+-------------+-------------+-----------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql>
